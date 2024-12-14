@@ -1,0 +1,28 @@
+local G = script.Parent.Parent.Parent.Interruptor.PressE.G
+local On = script.Parent.Parent.Parent.Interruptor.PressE.On
+local BB = script.Parent.Parent.Parent.Interruptor.Vector.BB
+
+local ProximityPrompt = script.Parent
+local Gas = game:GetService("ReplicatedStorage").Fuel
+
+function atualizarGasolina()
+    BB.Number.Text = "Combustivel: " .. G.Value
+end
+
+ProximityPrompt.Triggered:Connect(function(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    if humanoid:GetState() == Enum.HumanoidStateType.Dead then
+        return
+    end
+
+    local gasItem = character:FindFirstChild("Fuel")
+    if gasItem then
+        gasItem:Destroy() -- Deletes player item named ¨Fuel¨
+        if G then
+            G.Value = G.Value + 35
+        end
+        atualizarGasolina()
+    end
+end)
